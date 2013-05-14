@@ -2,5 +2,10 @@
 #.*#
 *.o
 *.a
+*.cache
+config.log
+config.status
+Makefile
+trq_conf.h
 trq_deque_x_[0-9][0-9][0-9].c
 trq_list_x_[0-9][0-9][0-9].c
