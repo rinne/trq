@@ -1,0 +1,392 @@
+.\"   -*- nroff -*-
+.\" 
+.\"  ----------------------------------------------------------------------
+.\"  Deque for struct type with only one link pointer (x->next).
+.\"  ----------------------------------------------------------------------
+.\"  Created      : Fri Dec  5 15:24:35 1997 tri
+.\"  Last modified: Wed Oct 10 01:06:38 2001 tri
+.\"  ----------------------------------------------------------------------
+.\"  Copyright © 1995-1998, 2001
+.\"  Timo J. Rinne <tri@iki.fi>
+.\"  All rights reserved.  See file COPYRIGHT for details.
+.\"  ----------------------------------------------------------------------
+.\"  Any express or implied warranties are disclaimed.  In no event
+.\"  shall the author be liable for any damages caused (directly or
+.\"  otherwise) by the use of this software.
+.\"
+.\"  Please, send your patches to <tri@iki.fi>.
+.\" ----------------------------------------------------------------------
+.\"
+.\" $Id: trq_deque.3,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
+.\"
+.\" $Log: trq_deque.3,v $
+.\" Revision 1.1.1.1  2001/10/09 22:29:31  tri
+.\" 	Imported back from the SSH source tree.
+.\"
+.\" Revision 1.19  1998/07/06 08:04:42  tri
+.\" Added endlog.
+.\"
+.\" Revision 1.18  1998/06/22 07:15:32  tri
+.\" trq_list_member_p -> trq_list_member
+.\" trq_deque_member_p -> trq_deque_member
+.\" trq_list_pointer_valid_p -> trq_list_pointer_valid
+.\" trq_list_compatible_p -> trq_list_compatible
+.\" trq_deque_compatible_p -> trq_deque_compatible
+.\"
+.\" Revision 1.17  1998/06/18 07:22:12  tri
+.\" Heavy rethinking of the concepts in the deque
+.\" and the list.  For now on both deque and list
+.\" start from `tail' and end to `head'.  Sorting
+.\" functions make order ascending from tail to head.
+.\" Moving list pointer forward, move it towards head
+.\" and moving it backwards move it towards tail.
+.\"
+.\" Terms head and tail are utilized also in lists
+.\" replacing old `first' and `last'.
+.\"
+.\" Now they should make sense.
+.\"
+.\" Revision 1.16  1998/04/23 13:33:24  tri
+.\" No more different USE_FUNCTIONS directive for
+.\" lists and deques.
+.\"
+.\" Revision 1.15  1998/04/23 13:31:06  tri
+.\" Added trq_deque_get_nth.
+.\"
+.\" Revision 1.14  1998/04/21 14:30:06  tri
+.\" test_and_get -> find
+.\"
+.\" Revision 1.13  1998/04/21 13:30:52  tri
+.\" Added trq_deque_find.
+.\"
+.\" Revision 1.12  1998/04/20 20:47:17  tri
+.\" TRQ_*_NO_ITEM -> TRQ_NO_ITEM
+.\"
+.\" Revision 1.11  1998/04/20 20:42:00  tri
+.\" Made put/get stuff at least a bit understandable.
+.\"
+.\" Revision 1.10  1998/04/20 18:11:36  tri
+.\" Italic added.
+.\"
+.\" Revision 1.9  1998/04/20 18:09:55  tri
+.\" Added sorting functions.
+.\"
+.\" Revision 1.8  1998/04/20 15:05:06  tri
+.\" SNAFU in search and replace.
+.\"
+.\" Revision 1.7  1998/04/20 14:55:17  tri
+.\" Final solution for deque basic operation names.
+.\" Now they are trq_deque_insert_head, trq_deque_insert_tail,
+.\" trq_deque_get_head and trq_deque_get_tail.  After intensive
+.\" customer survey, this seems to be the most intuitive way.
+.\"
+.\" Revision 1.6  1998/04/18 11:52:55  tri
+.\" trq_deque_swap
+.\"
+.\" Revision 1.5  1998/04/18 10:31:30  tri
+.\" Formatting.
+.\"
+.\" Revision 1.4  1998/04/18 10:29:47  tri
+.\" Renamed API functions to more intuitive form:
+.\" trq_deque_put_last to trq_deque_put,
+.\" trq_deque_put to trq_deque_push,
+.\" trq_deque_get_tail to trq_deque_pop,
+.\" trq_deque_mapcar_bw to trq_deque_mapcar_reverse,
+.\" trq_list_mapcar_bw to trq_list_mapcar_reverse,
+.\" trq_deque_join_bw to trq_deque_join_tail and
+.\" trq_deque_join to trq_deque_join_head.
+.\"
+.\" Revision 1.3  1998/04/17 15:21:49  tri
+.\" Added trq_deque_mapcar_reverse.
+.\"
+.\" Revision 1.2  1998/04/17 08:51:57  tri
+.\" Types `deque' and `list' and constants `DEQUE_NO_ITEM'
+.\" and `LIST_NO_ITEM' prefixed with `trq_' and `TRQ_'
+.\" accordingly.
+.\"
+.\" Revision 1.1  1998/04/16 14:40:25  tri
+.\" Initial revision
+.\"
+.\" $EndLog$
+.\"
+
+.TH trq_deque 3TRI "16 April 1997" "Timo J. Rinne" "EFFICIENT DEQUE PACKAGE"
+
+.SH NAME
+.IX "trq_deque(3TRI)"
+
+libtrq \- Efficient list data structure and operations for storage
+units with only one link pointer. 
+
+.SH SYNOPSIS
+.nf
+.B #include <trq_deque.h>
+.PP
+.B cc file.c -ltrq
+.PP
+.nf
+.B "int   trq_deque_init(trq_deque *Q, t, m);"
+.B "void  trq_deque_clear(trq_deque *Q);"
+.B "int   trq_deque_length(trq_deque *Q);"
+.B "int   trq_deque_compatible(trq_deque *Q1, trq_deque *Q2);"
+.B "int   trq_deque_insert_head(trq_deque *Q, void *b);"
+.B "int   trq_deque_insert_tail(trq_deque *Q, void *b);"
+.B "void *trq_deque_get_head(trq_deque *Q);"
+.B "void *trq_deque_get_tail(trq_deque *Q);"
+.B "void *trq_deque_get_nth(trq_deque *Q, int nth);"
+.B "int   trq_deque_reverse(trq_deque *Q);"
+.B "int   trq_deque_remove(trq_deque *Q, void *b);"
+.B "void *trq_deque_find(trq_deque *Q,"
+.B "                     int (*test)(void *item, void *context),"
+.B "                     void *context);"
+.B "int   trq_deque_member(trq_deque *Q, void *b);"
+.B "int   trq_deque_join_head(trq_deque *to, trq_deque *from);"
+.B "int   trq_deque_join_tail(trq_deque *to, trq_deque *from);"
+.B "int   trq_deque_swap(trq_deque *Q, void *item1, void *item2);"
+.B "int   trq_deque_mapcar(trq_deque *Q,"
+.B "                       void *(*mapper)(void *item,"
+.B "                                       void *context),"
+.B "                       void *context);"
+.B "int   trq_deque_mapcar_reverse(trq_deque *Q,"
+.B "                               void *(*mapper)(void *item,"
+.B "                                               void *context),"
+.B "                               void *context);"
+.B "int   trq_deque_mergesort(trq_deque *Q,"
+.B "                          int (*test)(void *item1,"
+.B "                                      void *item2,"
+.B "                                      void *context),"
+.B "                          void *context);"
+.B "int   trq_deque_quicksort(trq_deque *Q,"
+.B "                          int (*test)(void *item1,"
+.B "                                      void *item2,"
+.B "                                      void *context),"
+.B "                          void *context);"
+.B "int   trq_deque_bubblesort(trq_deque *Q,"
+.B "                           int (*test)(void *item1,"
+.B "                                       void *item2,"
+.B "                                       void *context),"
+.B "                           void *context);"
+.B "int   trq_deque_shuffle(trq_deque *Q,"
+.B "                        unsigned char *seed,"
+.B "                        size_t seed_len);"
+
+.SH INITIALIZATION
+
+.I trq_deque_init
+
+Initializes deque Q.  The type of the storage unit in the
+deque is t and m is the member of the structure that is
+used as a link pointer.  Implementation of 
+.I trq_deque_init 
+is always a macro.
+
+.SH QUERY
+
+.I trq_deque_length
+
+Returns the number of items stored in deque Q.
+
+.I trq_deque_compatible
+
+Returns nonzero value if deques Q1 and Q2 are compatible,
+i.e. they store their next pointer in the same offset
+within the storage unit.
+
+.SH MANIPULATION
+
+A deque is a data structure that combines FIFO (queue) and FILO
+(stack) structures.  Therefore data items can be added to the both
+ends of the structure.
+
+.I trq_deque_insert_head
+and
+.I trq_deque_insert_tail
+
+Function
+.I trq_deque_insert_head
+adds a data item to the beginning of the deque.
+Function
+.I trq_deque_insert_tail
+adds a data item to the end of the deque.
+.I trq_deque_insert_head 
+and
+.I trq_deque_insert_tail
+functions return the number
+of items in the deque after the operation.  
+
+.I trq_deque_get_head
+and
+.I trq_deque_get_tail
+
+Functions
+.I trq_deque_get_head
+and
+.I trq_deque_get_tail
+remove the data item from the beginning or the endof the deque
+respectively. 
+.I trq_deque_get_tail 
+and
+.I trq_deque_get_head
+return a pointer to the stored data
+item (same as b in 
+.I trq_deque_insert_head
+and 
+.I trq_deque_insert_tail
+function) or
+TRQ_NO_ITEM if deque is empty.
+
+Since a deque combines queue and stack structures, they can be
+implemented trivially with deque library.  To make this a bit more
+intuitive, there are some macros.
+
+Queue-like (FIFO) access to the deque can be made with
+.I trq_deque_put
+and
+.I trq_deque_get
+macros.  They are simply aliases to 
+.I trq_deque_insert_head
+and
+.I trq_deque_get_tail
+operations.
+Stack-like (FILO) access to the deque can be made with
+.I trq_deque_push
+and
+.I trq_deque_pop
+macros.  They are simply aliases to 
+.I trq_deque_insert_head
+and
+.I trq_deque_get_head
+operations.
+
+Function
+.I trq_deque_get_nth
+removes and returns the item from the deque by order number.
+The deque is `indexed' beginning from 1 (not 0).
+If there are not enough items in the deque, TRQ_NO_ITEM is returned
+and the deque is left untouched.
+
+.I trq_deque_reverse
+
+Turn deque Q around.  Returns the number of items in the
+deque.
+
+.I trq_deque_remove
+
+Remove item b from deque Q.  Returns nonzero value if item
+b was succesfully removed, zero otherwise.
+
+The item can me searched with caller defined test function by
+.I trq_deque_find
+function.  It tests each item in the queue with the caller 
+specified test function.  If the test function returns non-zero (true)
+value, the traversal is aborted, the item is removed from the deque
+and returned to the caller.  If item is not found, TRQ_NO_ITEM is
+returned. 
+
+.I trq_deque_member
+
+Search queue for item b.  If item is found returns a
+number of trq_deque_get_tail operetions needed in order to retrieve
+b.
+
+.I trq_deque_join_head
+and
+.I trq_deque_join_tail
+
+Add the member items of deque `from' into the list `to'.
+Items are removed from the list `from'.  Deques `from' and
+`to' have to be initialized similarly.  Number of items in
+list `to' after the operation is returned.  
+.I trq_deque_join_head
+puts deque `from' after the items in deque `to',
+.I trq_deque_join_tail
+puts items before the ones in deque `to'
+
+Two items in the deque can be swapped with
+.I trq_deque_swap
+function. Here one pointer style bites badly.  We can't just change
+pointers in neibourghs, because we don't know them without traversing.
+
+.SH TRAVERSING
+
+Whole deque can be traversed with
+.I trq_deque_mapcar
+function.  Mapper function is called with each item in the
+deque with user given context pointer.  If mapper function returns
+NULL, the item in question is dropped from the queue.  If mapper
+function returns item itself, the item is spared.  If mapper function
+returns other non-NULL pointer, the current item is dropped and
+replaced by this returned new item.  If item is dropped by the mapper
+function, no more references to it are made by the library.  Mapper
+can therefore deallocate the memory occupied by the item, if
+necessary.
+
+The deque is traversed from tail to head.
+
+Function
+.I trq_deque_mapcar_reverse
+is otherwise identical to 
+.I trq_deque_mapcar
+but it traverses the deque from head to tail.
+
+.SH SORTING
+
+Deque can be sorted with different sorting algorithms.
+Functions
+.I trq_deque_mergesort
+and
+.I trq_deque_quicksort
+and
+.I trq_deque_bubblesort
+implement mergesort, quicksort and bubblesort algorithms
+respectively.  The order of the items is tested by user provided test
+function that is called with two items and a context pointer provided
+by the caller.  If items are equal, then the test function should
+return 0.  If the first item is greater than the second one, the
+return value should be positive. If the first item is less than
+the second one the return value should be negative (e.g. -1).
+
+Remember the worst cases for each algorithm.  Bubblesort is terrible
+with large lists that is in random order.  Quicksort is bad with lists
+that are almost or totally in order.  Mergesort is quite nice since it
+has no real `bad cases'.
+
+All sorting algorithms sort deque into ascending order beginning from
+the tail.
+
+.SH SHUFFLING
+
+Deque can be shuffled with
+.I trq_deque_shuffle
+function.  Shuffling is deterministic in sense that with identican seed and
+identical items (item pointers) in deque, the shuffled result is also
+identical between calls.  So, to make random shuffling, remember to 
+initialize seed with different random data for each call.
+
+.SH CAUTION
+
+Single item can be in the single list only once.  
+
+All items in the single list must be of same type or at
+least have the their next pointer in the same offset of the
+structure. 
+
+If you want to store same item into multiple lists, all the
+lists must use different member of the structure as a next
+pointer. 
+
+Use `#define TRQ_USE_FUNCTIONS 1' prior to `#include <deque.h>'
+if you want all deque perations to be real function calls.
+This can make executable somewhat smaller but also slower.  Be adviced
+that otherwise all trq operations may be macros or inline functions
+and this enables all possible macro anomalies (e.g. arguments can be
+multiply evaluated).
+
+.SH COPYRIGHT
+Libtrq library is copyright 1995-2001 by Timo J. Rinne <\fBtri@iki.fi\fP>.
+See file COPYRIGHT in the distribution for details.
+
+.SH SEE ALSO
+trq_list(3TRI)
+
+.\" eof (deque.3)

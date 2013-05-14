@@ -1,0 +1,145 @@
+#! /bin/sh
+#
+#   -*- sh -*-
+# 
+#  ----------------------------------------------------------------------
+#  Deque for struct type with only one link pointer (x->next).
+#  Generate automagically source files trq_*_x_[0-9][0-9][0-9].c
+#  ----------------------------------------------------------------------
+#  Created      : Mon Jun 22 14:58:33 1998 tri
+#  Last modified: Wed Oct 10 01:05:38 2001 tri
+#  ----------------------------------------------------------------------
+#  Copyright © 1998, 2001
+#  Timo J. Rinne <tri@iki.fi>
+#  All rights reserved.  See file COPYRIGHT for details.
+#  ----------------------------------------------------------------------
+#  Any express or implied warranties are disclaimed.  In no event
+#  shall the author be liable for any damages caused (directly or
+#  otherwise) by the use of this software.
+#
+#  Please, send your patches to <tri@iki.fi>.
+#  ----------------------------------------------------------------------
+#
+# $Id: gen_trq_x_c,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
+#
+# $Log: gen_trq_x_c,v $
+# Revision 1.1.1.1  2001/10/09 22:29:31  tri
+# 	Imported back from the SSH source tree.
+#
+# Revision 1.2  1998/07/06 13:50:58  tri
+# 	Fixed log entries to have CVS like indentation.
+#
+# Revision 1.1  1998/07/06 13:11:30  tri
+# 	Added to CVS.
+#
+# Revision 1.6  1998/07/06 08:02:50  tri
+#	Added endlog.
+#
+# Revision 1.5  1998/06/23 07:39:21  tri
+#	Added possbility to define small objects in trq_conf.h.
+#
+# Revision 1.4  1998/06/22 17:17:26  tri
+#	Fixed one minor glitch.
+#
+# Revision 1.3  1998/06/22 16:55:41  tri
+#	Fixed flag names.
+#
+# Revision 1.2  1998/06/22 16:50:10  tri
+#	Added flags.
+#
+# Revision 1.1  1998/06/22 16:23:03  tri
+#	Initial revision
+#
+# $EndLog$
+#
+
+u="1"
+while echo "$1" | grep '^-.*' >/dev/null 2>&1
+do
+    if test "x$1" = "x-small-object"
+    then
+        u="1"
+    elif test "x$1" = "x-big-object"
+    then
+        u="0"
+    else
+        echo "gen_trq_x_c: Unknown flag $1" 1>&2
+        exit 1
+    fi
+    shift
+done
+
+f="$1"
+
+if test "x$f" = "x"
+then
+    echo "gen_trq_x_c: Filename missing" 1>&2
+    exit 2
+fi
+
+t=`echo "$f" | sed -n 's,^trq_\([a-zA-Z][a-zA-Z]*\)_x_[0-9][0-9]*\.c,\1,p'`
+n=`echo "$f" | sed -n 's,^trq_[a-zA-Z][a-zA-Z]*_x_\([0-9][0-9]*\)\.c,\1,p'`
+
+echo $n | grep '^[0-9][0-9]*$' >/dev/null 2>&1
+if test "$?" != "0"
+then
+    echo "gen_trq_x_c: Cannot generate $f" 1>&2
+    exit 3
+fi
+
+if test "$t" != "deque" -a "$t" != "list"
+then
+    echo "gen_trq_x_c: Cannot generate $f" 1>&2
+    exit 4
+fi
+
+if test "$t" = "deque"
+then
+    T="DEQUE"
+    h="trq_deque.h"
+fi
+
+if test "$t" = "list"
+then
+    T="LIST"
+    h="trq_list.h"
+fi
+
+rm -f "$f"
+
+( echo '/* GENERATED FILE.  DO NOT EDIT. */'
+  echo ''
+  echo '/*'
+  echo ' * Copyright © 1998 Timo J. Rinne <tri@iki.fi>'
+  echo ' * All rights reserved.'
+  echo ' * See file COPYRIGHT for details.'
+  echo ' */'
+  echo ''
+  echo '#include <trq_conf.h>'
+  echo ''
+  echo '#ifdef  TRQ_USE_FUNCTIONS'
+  echo '#  undef  TRQ_USE_FUNCTIONS'
+  echo '#endif'
+  echo '#ifdef __TRQ__SMALL__OBJECTS__'
+  echo '#define TRQ_USE_FUNCTIONS __TRQ__SMALL__OBJECTS__'
+  echo '#else'
+  echo '#define TRQ_USE_FUNCTIONS '"$u"''
+  echo '#endif'
+  echo ''
+  echo '#define __TRQ_'"$T"'_X_NUM__C__ 1'
+  echo '#define __TRQ_'"$T"'_X_'"$n"'__C__ 1'
+  echo ''
+  echo '#include <'"$h"'>'
+  echo ''
+  echo '/* GENERATED FILE.  DO NOT EDIT. */'
+  echo '/* eof ('"$f"') */' ) > "$f"
+
+if test "$?" != "0"
+then
+    echo "gen_trq_x_c: Cannot generate $f" 1>&2
+    exit 5
+fi
+
+exit 0
+
+# eof (gen_trq_x_c)

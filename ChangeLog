@@ -1,0 +1,183 @@
+2001-10-10  Timo J. Rinne  <tri@iki.fi>
+
+	* Added shuffling.
+
+2001-10-09  Timo J. Rinne  <tri@iki.fi>
+
+	* Moved back from SSH source tree.  Million fixes and
+	  changes imported, most of which only visible in logs
+	  of the source files.
+
+1998-07-06  Timo J. Rinne  <tri@iki.fi>
+
+	* Utilized automake.
+
+1998-06-23  Timo J. Rinne  <tri@iki.fi>
+
+	* Removed ___func from symbol names.
+
+1998-06-22  Timo J. Rinne  <tri@iki.fi>
+
+	* Swapping implemented for lists.
+
+	* Fixed swapping.
+
+	* Fixed trq_*_member functions.
+
+	* Removed all _p lispisms from function names.
+
+	* Improved testing.
+
+	* Made function versions of the inline stuff (trq_*_x.h) 
+	  compile from automagically generated source files, one 
+	  from each.
+	
+	* Snapshot.
+
+1998-06-18  Timo J. Rinne  <tri@iki.fi>
+
+	* Heavy rethinking of the concepts in the deque
+	  and the list.  For now on both deque and list
+	  start from `tail' and end to `head'.  Sorting
+	  functions make order ascending from tail to head.
+	  Moving list pointer forward, move it towards head
+	  and moving it backwards move it towards tail.
+
+	  Terms head and tail are utilized also in lists
+	  replacing old `first' and `last'.
+
+	  Now they should make sense.
+
+	* Snapshot.
+
+	* Test programs made more extensive and about
+	  million fixes because of this.
+	
+	* Another snapshot.
+
+	* Fixed couple annoying bugs.
+
+	* Yet another snapshot.
+
+1998-06-17  Timo J. Rinne  <tri@iki.fi>
+
+	* Each test binary have now source file of its own.
+
+	* Snapshot.
+
+1998-06-11  Timo J. Rinne  <tri@iki.fi>
+
+	* Moved test stuff to subdirectories.
+
+1998-04-23  Timo J. Rinne  <tri@iki.fi>
+
+	* Added sorting for lists too.
+
+	* Added trq_list_rewind_to and trq_list_rewind_find to rewind 
+	  list pointer to the arbitrary item.
+
+	* Removed explicit macro calls from _x files.  They are not 
+	  needed anyway, because inlines are not included if macros
+	  aren't on.
+
+	* Added trq_deque_get_nth.
+
+	* Made single TRQ_USE_FUNCTIONS instead of separate ones for 
+	  lists	and deques.
+
+	* Snapshot
+
+1998-04-22  Timo J. Rinne  <tri@iki.fi>
+
+	* Snapshot
+
+1998-04-21  Timo J. Rinne  <tri@iki.fi>
+
+	* TRQ_*_NO_ITEM -> TRQ_NO_ITEM
+	  That's a NULL anyway so no need for several.
+
+	* Made push/pop and put/get to be aliases to the suitable
+	  operations to make FILO (stack) and FIFO (queue).
+
+	* Added trq_deque_test_and_get.
+
+	* Made typedefs for `callback' function types.
+
+1998-04-20  Timo J. Rinne  <tri@iki.fi>
+
+	* Added sorting functions.  Bubblesort, mergesort and quicksort
+	  implemented. 
+
+	* Final solution for deque basic operation names.
+	  Now they are trq_deque_insert_head, trq_deque_insert_tail,
+	  trq_deque_get_head and trq_deque_get_tail.  After intensive
+	  customer survey, this seems to be the most intuitive way.
+
+	* Snapshot
+
+1998-04-18  Timo J. Rinne  <tri@iki.fi>
+
+	* Renamed API functions to more intuitive form:
+	  trq_deque_put_last to trq_deque_put,
+	  trq_deque_put to trq_deque_push,
+	  trq_deque_get_last to trq_deque_pop,
+	  trq_deque_mapcar_bw to trq_deque_mapcar_reverse,
+	  trq_list_mapcar_bw to trq_list_mapcar_reverse,
+	  trq_deque_join_bw to trq_deque_join_begin and
+	  trq_deque_join to trq_deque_join_end.  Now list
+	  stuff seems at least somewhat comprehensible.
+
+	* Added trq_deque_swap.
+
+	* Snapshot.
+	
+1998-04-17  Timo J. Rinne  <tri@iki.fi>
+
+	* All API functions, types and constants should now be
+	  prefixed with trq_ or TRQ_.
+
+	* API should now be freezed.
+
+	* Fixed makefile so that compilation can be done
+	  also outside of the source directory.
+
+	* Fixed list stuff so that list pointer and list
+	  order is even somewhat meaningful.
+
+	* Renamed some trq_list_get_forward and
+	  trq_list_get_backward to ..._fw and ..._bw.
+
+	* Added mapcar_bw to both list and deque.
+
+	* Added list_to_deque and deque_to_list.
+	
+	* Snapshot done.
+
+1998-04-16  Timo J. Rinne  <tri@iki.fi>
+
+	* Renamed headers and library files trq_ prefixed.
+
+	* Added trq_deque_mapcar and trq_list_mapcar.
+
+	* Utilized RCS.
+
+1998-04-15  Timo J. Rinne  <tri@iki.fi>
+
+	* Renamed to libtrq.a
+
+	* Added libtrqtest.a
+
+	* Adopted BSD style copyright.  Former one didn't actually
+	  allow anything. 
+
+1995-1997   Timo J. Rinne  <tri@iki.fi>
+
+	* Million fixes and additions.
+
+1995-11-22  Timo J. Rinne  <tri@iki.fi>
+	
+	* First version of list stuff.
+
+1995-11-18  Timo J. Rinne  <tri@iki.fi>
+
+	* First version of deque stuff.

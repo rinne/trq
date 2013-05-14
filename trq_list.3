@@ -1,0 +1,423 @@
+.\"   -*- nroff -*-
+.\" 
+.\"  ----------------------------------------------------------------------
+.\"  Deque for struct type with only one link pointer (x->next).
+.\"  ----------------------------------------------------------------------
+.\"  Created      : Fri Dec  5 15:24:35 1997 tri
+.\"  Last modified: Wed Oct 10 01:06:47 2001 tri
+.\"  ----------------------------------------------------------------------
+.\"  Copyright © 1995-1998, 2001
+.\"  Timo J. Rinne <tri@iki.fi>
+.\"  All rights reserved.  See file COPYRIGHT for details.
+.\"  ----------------------------------------------------------------------
+.\"  Any express or implied warranties are disclaimed.  In no event
+.\"  shall the author be liable for any damages caused (directly or
+.\"  otherwise) by the use of this software.
+.\"
+.\"  Please, send your patches to <tri@iki.fi>.
+.\" ----------------------------------------------------------------------
+.\"
+.\" $Id: trq_list.3,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
+.\"
+.\" $Log: trq_list.3,v $
+.\" Revision 1.1.1.1  2001/10/09 22:29:31  tri
+.\" 	Imported back from the SSH source tree.
+.\"
+.\" Revision 1.19  1998/07/06 09:29:24  tri
+.\" Added endlog.
+.\"
+.\" Revision 1.18  1998/06/22 07:22:17  tri
+.\" Fixed trq_list_member explanation.
+.\"
+.\" Revision 1.17  1998/06/22 07:15:32  tri
+.\" trq_list_member_p -> trq_list_member
+.\" trq_deque_member_p -> trq_deque_member
+.\" trq_list_pointer_valid_p -> trq_list_pointer_valid
+.\" trq_list_compatible_p -> trq_list_compatible
+.\" trq_deque_compatible_p -> trq_deque_compatible
+.\"
+.\" Revision 1.16  1998/06/18 07:22:12  tri
+.\" Heavy rethinking of the concepts in the deque
+.\" and the list.  For now on both deque and list
+.\" start from `tail' and end to `head'.  Sorting
+.\" functions make order ascending from tail to head.
+.\" Moving list pointer forward, move it towards head
+.\" and moving it backwards move it towards tail.
+.\"
+.\" Terms head and tail are utilized also in lists
+.\" replacing old `first' and `last'.
+.\"
+.\" Now they should make sense.
+.\"
+.\" Revision 1.15  1998/04/23 13:33:47  tri
+.\" No more different USE_FUNCTIONS directive for
+.\" lists and deques.
+.\"
+.\" Revision 1.14  1998/04/22 22:33:00  tri
+.\" Added rewind_find and rewind_to.
+.\"
+.\" Revision 1.13  1998/04/22 22:06:31  tri
+.\" Added sorting section.
+.\"
+.\" Revision 1.12  1998/04/20 20:47:17  tri
+.\" TRQ_*_NO_ITEM -> TRQ_NO_ITEM
+.\"
+.\" Revision 1.11  1998/04/20 14:55:17  tri
+.\" Final solution for deque basic operation names.
+.\" Now they are trq_deque_insert_head, trq_deque_insert_tail,
+.\" trq_deque_get_head and trq_deque_get_tail.  After intensive
+.\" customer survey, this seems to be the most intuitive way.
+.\"
+.\" Revision 1.10  1998/04/18 10:32:41  tri
+.\" Formatting.
+.\"
+.\" Revision 1.9  1998/04/18 10:29:47  tri
+.\" Renamed API functions to more intuitive form:
+.\" trq_deque_put_last to trq_deque_put,
+.\" trq_deque_put to trq_deque_push,
+.\" trq_deque_get_tail to trq_deque_pop,
+.\" trq_deque_mapcar_bw to trq_deque_mapcar_reverse,
+.\" trq_list_mapcar_bw to trq_list_mapcar_reverse,
+.\" trq_deque_join_bw to trq_deque_join_tail and
+.\" trq_deque_join to trq_deque_join_head.
+.\"
+.\" Revision 1.8  1998/04/17 16:51:18  tri
+.\" Formatting.
+.\"
+.\" Revision 1.7  1998/04/17 16:50:41  tri
+.\" Added joins.
+.\"
+.\" Revision 1.6  1998/04/17 16:22:58  tri
+.\" Added conversion functions.
+.\"
+.\" Revision 1.5  1998/04/17 15:38:30  tri
+.\" Renamed trq_list_get_backward and trq_list_get_forward to
+.\" trq_list_get_bw and trq_list_get_fw accordingly.
+.\"
+.\" Revision 1.4  1998/04/17 15:22:49  tri
+.\" Added trq_list_mapcar_reverse.
+.\"
+.\" Revision 1.3  1998/04/17 12:45:25  tri
+.\" Formatting.
+.\"
+.\" Revision 1.2  1998/04/17 08:51:57  tri
+.\" Types `deque' and `list' and constants `DEQUE_NO_ITEM'
+.\" and `LIST_NO_ITEM' prefixed with `trq_' and `TRQ_'
+.\" accordingly.
+.\"
+.\" Revision 1.1  1998/04/16 14:40:25  tri
+.\" Initial revision
+.\"
+.\" $EndLog$
+.\"
+
+.TH trq_list 3TRI "16 April 1997" "Timo J. Rinne" "EFFICIENT LIST PACKAGE"
+
+.SH NAME
+.IX "trq_list(3TRI)"
+
+libtrq \- Efficient list data structure and operations for storage
+units with only one link pointer. 
+
+.SH SYNOPSIS
+.nf
+.B #include <trq_list.h>
+.PP
+.B cc file.c -ltrq
+.PP
+.nf
+.B "void  trq_list_init(trq_list *L, t, m);"
+.B "int   trq_list_length(trq_list *L);"
+.B "void *trq_list_current(trq_list *L);"
+.B "int   trq_list_compatible(trq_list *L1, trq_list *L2);"
+.B "int   trq_list_rewind(trq_list *L);"
+.B "int   trq_list_rewind_to(trq_list *L, void *b);"
+.B "int   trq_list_rewind_find(trq_list *L,"
+.B "                           int (*test)(void *item, void *context),"
+.B "                           void *context);"
+.B "int   trq_list_end(trq_list *L);"
+.B "int   trq_list_pointer_valid (trq_list *L);"
+.B "int   trq_list_insert_head(trq_list *L, void *b);"
+.B "int   trq_list_insert_tail(trq_list *L, void *b);"
+.B "void *trq_list_get_head(trq_list *L);"
+.B "void *trq_list_get_tail(trq_list *L);"
+.B "int   trq_list_put_before(trq_list *L, void *b);"
+.B "int   trq_list_put_after(trq_list *L, void *b);"
+.B "void *trq_list_get_fw(trq_list *L);"
+.B "void *trq_list_get_bw(trq_list *L);"
+.B "int   trq_list_reverse(trq_list *L);"
+.B "int   trq_list_remove(trq_list *L, void *b);"
+.B "int   trq_list_member(trq_list *L, void *b);"
+.B "int   trq_list_fw(trq_list *L, int n);"
+.B "int   trq_list_bw(trq_list *L, int n);"
+.B "int   trq_list_mapcar(trq_list *L,"
+.B "                      void *(*mapper)(void *item,"
+.B "                                      void *context),"
+.B "                      void *context);"
+.B "int   trq_list_mapcar_reverse(trq_list *L,"
+.B "                             void *(*mapper)(void *item,"
+.B "                                            void *context),"
+.B "                             void *context);"
+.B "int   trq_list_to_deque(trq_deque *Q, trq_list *L);"
+.B "int   trq_deque_to_list(trq_list *L, trq_deque *Q);"
+.B "int   trq_list_join_head(trq_list *Ldst, trq_list *Lsrc);"
+.B "int   trq_list_join_tail(trq_list *Ldst, trq_list *Lsrc);"
+.B "int   trq_list_mergesort(trq_list *L,"
+.B "                         int (*test)(void *item1,"
+.B "                                     void *item2,"
+.B "                                     void *context),"
+.B "                         void *context);"
+.B "int   trq_list_quicksort(trq_list *L,"
+.B "                         int (*test)(void *item1,"
+.B "                                     void *item2,"
+.B "                                     void *context),"
+.B "                         void *context);"
+.B "int   trq_list_bubblesort(trq_list *L,"
+.B "                          int (*test)(void *item1,"
+.B "                                      void *item2,"
+.B "                                      void *context),"
+.B "                          void *context);"
+.B "int   trq_list_shuffle(trq_deque *Q,"
+.B "                       unsigned char *seed,"
+.B "                       size_t seed_len);"
+
+.SH INITIALIZATION
+
+Function
+.I trq_list_init
+initializes list L.  The type of the storage unit in the
+list is t and m is the member of the structure that is
+used as a link pointer.  
+Implementation of
+.I trq_list_init
+is always a macro.
+
+.SH QUERY
+.I trq_list_length
+
+Function returns the number of items stored in the list L.
+
+.I trq_list_current
+
+Returns the pointer to the current item.  If the list pointer
+is invalid the return value is TRQ_NO_ITEM.  Returned
+item is not removed from the list.
+
+.I trq_list_compatible
+
+Return nonzero value if lists L1 and L2 
+are compatible, i.e. they store their next pointer in the same offset
+within the storage unit.
+
+.SH POINTER
+
+.I trq_list_rewind
+
+Move list pointer to the first item in the list L.  If
+list is empty the list pointer becomes invalid.
+
+.I trq_list_end
+
+Move list pointer to the last item in the list L.  If
+list is empty the list pointer becomes invalid.
+
+Function
+.I trq_list_rewind_to
+rewinds the list so, that the list pointer points to the caller given
+item.  Returns the order number (positive integer) of the item.  If
+item is not found, the return value is zero.  In this case, the list
+pointer becomes invalid.
+
+Function
+.I trq_list_rewind_find
+rewinds the list so, that the list pointer points to the first item that
+makes user given test function return true (nonzero) value.
+Returns the order number (positive integer) of the item.  If
+the test function returns false (zero) on all items, the return value
+is zero.  In this case, the list pointer becomes invalid.
+
+.I trq_list_pointer_valid
+
+Returns nonzero value if the list pointer of the list L is
+valid.
+
+MANIPULATION
+
+.I trq_list_insert_head
+
+Make b the first element of list L.  List pointer is not
+altered. 
+
+.I trq_list_insert_tail
+
+Make b the last element of list L.  List pointer is not
+altered. 
+
+.I trq_list_get_head
+
+Return the first element in the list L.  If the list is
+empty the return value is TRQ_NO_ITEM.  If the list
+pointer points to the returned value the list pointer
+becomes invalid.
+
+.I trq_list_get_tail
+
+Return the last element in the list L.  If the list is
+empty the return value is TRQ_NO_ITEM.  If the list
+pointer points to the returned value the list pointer
+becomes invalid.
+
+.I trq_list_put_before
+
+Put item b into the list L before the current item.
+If the list pointer is invalid the item is not added.
+Return value is nonzero on success and zero on failure.
+List pointer is not altered.
+
+.I trq_list_put_after
+
+Put item b into the list L after the current item.
+If the list pointer is invalid the item is not added.
+Return value is nonzero on success and zero on failure.
+List pointer is not altered.
+
+.I trq_list_get_fw
+
+Return the current item and move list pointer forward.  If
+list pointer already points to the last item the list
+pointer becomes invalid.
+
+.I trq_list_get_bw
+
+Return the current item and move list pointer backward.  If
+list pointer already points to the first item the list
+pointer becomes invalid.
+
+.I trq_deque_reverse
+
+Turn list L around.  Returns the number of items in the
+list.  List pointer remains valid if it's valid before 
+the call.
+
+.I trq_list_remove
+
+Remove item b from list L.  Returns nonzero value if item
+b was succesfully removed, zero otherwise.  If the list
+pointer points to the removed item the list pointer
+becomes invalid. 
+
+.I trq_list_member
+
+Search list L for item b.  If item is found returns a number of
+trq_list_get_tail operetions needed in order to retrieve b.  Otherwise
+return value is zero.
+
+.I trq_list_fw
+
+Move list pointer forward n items.  Returns nonzero value
+on success.  If the list pointer cannot be moved forward n
+items the list pointer becomes invalid and zero value is
+returned. 
+
+.I trq_list_bw
+
+Move list pointer backward n items.  Returns nonzero value
+on success.  If the list pointer cannot be moved backward
+n items the list pointer becomes invalid and zero value is
+returned. 
+
+Whole list can be traversed with
+.I trq_list_mapcar
+function.  Mapper function is called with each item in the
+list with user given context pointer.  If mapper function returns
+NULL, the item in question is dropped from the list.  If mapper
+function returns item itself, the item is spared.  If mapper function
+returns other non-NULL pointer, the current item is dropped and
+replaced by this returned new item.  If item is dropped by the mapper
+function, no more references to it are made by the library.  Mapper
+can therefore deallocate the memory occupied by the item, if
+necessary.
+Function
+.I trq_list_mapcar
+invalidates the list pointer, if list pointer points to the item that 
+is dropped by the mapper function.  If mapper function replaces the 
+item that is pointed by the list poiter, list pointer is not
+invalidated.
+
+Function
+.I trq_deque_mapcar_reverse
+is otherwise identical to 
+.I trq_deque_mapcar
+but it traverses the list backwads.
+
+.SH SORTING
+
+List can be sorted with different sorting algorithms.
+Functions
+.I trq_list_mergesort
+and
+.I trq_list_quicksort
+and
+.I trq_list_bubblesort
+implement mergesort, quicksort and bubblesort algorithms
+respectively.  The order of the items is tested by user provided test
+function that is called with two items and a context pointer provided
+by the caller.  If items are equal, then the test function should
+return 0.  If the first item is greater than the second one, the
+return value should be positive. If the first item is less than
+the second one the return value should be negative (e.g. -1).
+
+Remember the worst cases for each algorithm.  Bubblesort is terrible
+with large lists that is in random order.  Quicksort is bad with lists
+that are almost or totally in order.  Mergesort is quite nice since it
+has no real `bad cases'.
+
+All sorting functions invalidate the list pointer.
+
+All sorting algorithms sort list into ascending order beginning from
+the tail.
+
+.SH SHUFFLING
+
+List can be shuffled with
+.I trq_deque_shuffle
+function.  Shuffling is deterministic in sense that with identican seed and
+identical items (item pointers) in deque, the shuffled result is also
+identical between calls.  So, to make random shuffling, remember to 
+initialize seed with different random data for each call.
+
+.SH CONVERSION
+
+Conversion between list and deque is made with
+.I trq_list_to_deque
+and
+.I trq_deque_to_list
+functions.  Destination structure should be empty before call.
+Possible list pointer is lost.
+
+Functions
+.I trq_list_join_head
+and
+.I trq_list_join_tail
+concatenate source list to the end or begin or the destination list
+accordingly.
+
+.SH CAUTION
+
+Use `#define TRQ_USE_FUNCTIONS 1' prior to `#include <list.h>'
+if you want all list operations to be real function calls.
+This makes executable smaller but also somewhat slower.
+.PP
+Beware the operations that possibly invalidate the list
+pointer.
+.PP
+See CAUTION list of the deque documentation.
+
+.SH COPYRIGHT
+Libtrq library is copyright 1995-1997 by Timo J. Rinne <\fBtri@iki.fi\fP>.
+See file COPYRIGHT in the distribution for details.
+
+.SH SEE ALSO
+trq_list(3TRI)
+
+.\" eof (trq_list.3)

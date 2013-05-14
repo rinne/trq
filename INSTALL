@@ -1,0 +1,27 @@
+$Id: INSTALL,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
+
+Deque library libtrq.a, public headers and manual pages are installed
+with following procedure:
+
+	If you want to use configure:
+
+		1. ./configure
+		2. make
+		3. make test
+		4. make install (as root if needed)
+
+	Configure by hand:
+
+		1. Copy Makefile.sample to Makefile and edit it
+		   to conform with your system.
+		2. Copy deque_conf.h.sample to deque_conf.h and
+		   edit line "typedef unsigned int trq_p_i_t" so
+		   that trq_p_i_t is defined as unsigned integer
+		   type size of a pointer.
+		3. make
+		4. make test
+		5. make install
+
+If you use trq in a software you need to debug, file trq-gdbinit
+contents some useful macros you can use in examination of trq 
+deques and lists.  File can be added to your ~/.gdbinit.

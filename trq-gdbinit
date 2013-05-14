@@ -1,0 +1,159 @@
+#   -*- shell-script -*-
+# 
+#  ----------------------------------------------------------------------
+#  Gdb macros to help trq-data structure examination.
+#  ----------------------------------------------------------------------
+#  Created      : Tue Jun  9 15:35:14 1998 tri
+#  Last modified: Wed Oct 10 01:05:54 2001 tri
+#  ----------------------------------------------------------------------
+#  Copyright © 1998, 2001
+#  Timo J. Rinne <tri@iki.fi>
+#  All rights reserved.  See file COPYRIGHT for details.
+#  ----------------------------------------------------------------------
+#  Any express or implied warranties are disclaimed.  In no event
+#  shall the author be liable for any damages caused (directly or
+#  otherwise) by the use of this software.
+#
+#  Please, send your patches to <tri@iki.fi>.
+#  ----------------------------------------------------------------------
+#
+# $Id: trq-gdbinit,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
+#
+# $Log: trq-gdbinit,v $
+# Revision 1.1.1.1  2001/10/09 22:29:31  tri
+# 	Imported back from the SSH source tree.
+#
+# Revision 1.2  1998/07/06 13:50:58  tri
+# 	Fixed log entries to have CVS like indentation.
+#
+# Revision 1.1  1998/07/06 13:11:35  tri
+# 	Added to CVS.
+#
+# Revision 1.8  1998/07/06 08:03:19  tri
+#	Added endlog.
+#
+# Revision 1.7  1998/06/18 14:41:07  tri
+#	Fixed printing of head and tail pointers.
+#
+# Revision 1.6  1998/06/18 14:37:07  tri
+#	Fixed lprint.
+#
+# Revision 1.5  1998/06/18 14:21:10  tri
+#	Fixed deque order.
+#
+# Revision 1.4  1998/06/18 14:20:06  tri
+#	Fixed deque order.
+#
+# Revision 1.3  1998/06/10 12:25:49  tri
+#	Fixed type definition in documentation.
+#
+# Revision 1.2  1998/06/10 12:00:06  tri
+#	Added a bit of documentation.
+#
+# Revision 1.1  1998/06/09 14:46:34  tri
+#	Initial revision
+#
+# $EndLog$
+#
+define trq-first
+  set $trq_pitem    = (unsigned long)0
+  set $trq_citem    = (unsigned long)0
+  set $trq_citem    = (unsigned long)($arg0->h2)
+  set $trq_off      = (unsigned long)($arg0->off)
+  printf "len  = %d\n", ($arg0->len)
+  printf "off  = %d\n", ($arg0->off)
+  printf "tail = %p\n", ($arg0->h2)
+  printf "head = %p\n", ($arg0->h1)
+  print (void *)$trq_citem
+end
+
+define trq-last
+  set $trq_pitem    = (unsigned long)0
+  set $trq_citem    = (unsigned long)0
+  set $trq_citem    = (unsigned long)($arg0->h1)
+  set $trq_off      = (unsigned long)($arg0->off)
+  printf "len  = %d\n", ($arg0->len)
+  printf "off  = %d\n", ($arg0->off)
+  printf "tail = %p\n", ($arg0->h2)
+  printf "head = %p\n", ($arg0->h1)
+  print (void *)$trq_citem
+end
+
+define trq-next
+  if $trq_citem == 0
+    printf "No next item!\n"
+  else
+    set $trq_ppitem = $trq_pitem
+    set $trq_pitem  = $trq_citem
+    set $trq_citem = $trq_ppitem ^ (*(unsigned long *)($trq_citem+$trq_off))
+    if $trq_citem != 0
+      print (void *)$trq_citem
+    else
+      printf "No next item!\n"
+    end
+  end
+end
+
+define trq-print
+  trq-first $arg0
+  while $trq_citem != 0
+    trq-next
+  end
+end
+
+define trq-print-reverse
+  trq-last $arg0
+  while $trq_citem != 0
+    trq-next
+  end
+end
+
+define trq-lprint
+  printf "TAIL LIST:\n"
+  trq-print ($arg0->tail)
+  printf "CURRENT ITEM:\n"
+  print (void *)($arg0->c)
+  printf "HEAD LIST:\n"
+  trq-print ($arg0->head)
+end
+
+document trq-first
+Print the first item of the trq deque.
+Usage: trq-first deque
+Argument is of type (trq_deque *)
+After this command, trq-next traverses list from head to tail.
+end
+
+document trq-last
+Print the last item of the trq deque.
+Usage: trq-first deque
+Argument is of type (trq_deque *)
+After this command, trq-next traverses list from tail to head.
+end
+
+document trq-next
+Print the next item of the trq deque.
+Usage: trq-next
+The deque have to be reset with trq-first or trq-last before
+trq-next is called.
+end
+
+document trq-print
+Print the contents of the trq deque.
+Usage: trq-print deque
+Argument is of type (trq_deque *)
+end
+
+document trq-print-reverse
+Print the contents of the trq deque in reverse order.
+Usage: trq-print-reverse deque
+Argument is of type (trq_deque *)
+end
+
+document trq-lprint
+Print the contents of the trq list.
+Usage: trq-lprint list
+Argument is of type (trq_list *)
+end
+
+# eof (trq-gdbinit)
