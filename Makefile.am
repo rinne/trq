@@ -32,7 +32,7 @@ man_MANS = 		trq_deque.3		\
 EXTRA_DIST =		$(man_MANS)		\
 			COPYRIGHT		\
 			INSTALL			\
-			README			\
+			README.md		\
 			TODO			\
 			ChangeLog		\
 			configure		\
