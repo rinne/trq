@@ -4,9 +4,9 @@
  *  Efficient list operations for structures with one link pointer.
  *  ----------------------------------------------------------------------
  *  Created      : Wed Nov 22 11:09:03 1995 tri
- *  Last modified: Wed Oct 10 01:05:00 2001 tri
+ *  Last modified: Tue May 14 20:22:48 2013 tri
  *  ----------------------------------------------------------------------
- *  Copyright © 1995-1999, 2001
+ *  Copyright Â© 1995-1999, 2001, 2013
  *  Timo J. Rinne <tri@iki.fi>
  *  All rights reserved.  See file COPYRIGHT for details.
  *  ----------------------------------------------------------------------
@@ -17,137 +17,6 @@
  *  Please, send your patches to <tri@iki.fi>.
  *  ----------------------------------------------------------------------
  *
- * $Id: trq_list.h,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
- *
- * $Log: trq_list.h,v $
- * Revision 1.1.1.1  2001/10/09 22:29:31  tri
- * 	Imported back from the SSH source tree.
- *
- * Revision 1.6  2001/04/24 18:29:57  fis
- * 	changed method names in sshadt_map.h
- *
- * Revision 1.5  1999/01/25 09:08:57  tri
- *      Added trq_deque_mapcar_extended and fixed tests.
- *
- * Revision 1.4  1998/12/15 16:03:21  tri
- *      trq_list_put_{before,after} -> trq_list_insert_{before,after}
- *
- * Revision 1.3  1998/12/15 13:41:50  tri
- *      Renamed a few interfaces to make things more intuitive:
- *          - trq_list_rewind -> trq_list_goto_first
- *          - trq_list_end -> trq_list_goto_last
- *          - trq_list_insert_head -> trq_list_insert_last
- *          - trq_list_insert_tail -> trq_list_insert_first
- *          - trq_list_get_head -> trq_list_get_last
- *          - trq_list_get_tail -> trq_list_get_first
- *          - trq_list_join_head -> trq_list_join_after_last
- *          - trq_list_join_tail -> trq_list_join_before_first
- *
- * Revision 1.2  1998/07/06 13:51:09  tri
- *      Fixed log entries to have CVS like indentation.
- *
- * Revision 1.1  1998/07/06 13:11:50  tri
- *      Added to CVS.
- *
- * Revision 1.23  1998/07/06 09:30:22  tri
- *      Added endlog.
- *
- * Revision 1.22  1998/06/23 08:00:38  tri
- *      Prototypes are defined for trq_list.c.
- *
- * Revision 1.21  1998/06/23 07:52:00  tri
- *      Removed ___func from symbol names.
- *
- * Revision 1.20  1998/06/22 07:15:32  tri
- *      trq_list_member_p -> trq_list_member
- *      trq_deque_member_p -> trq_deque_member
- *      trq_list_pointer_valid_p -> trq_list_pointer_valid
- *      trq_list_compatible_p -> trq_list_compatible
- *      trq_deque_compatible_p -> trq_deque_compatible
- *
- * Revision 1.19  1998/06/21 15:26:25  tri
- *      Changed symbol names of function versions of the trq_calls.
- *
- * Revision 1.18  1998/06/18 12:46:14  tri
- *      Fixed trq_list_rewind and trq_list_end.
- *
- * Revision 1.17  1998/06/18 10:27:37  tri
- *      Added trq_list_pointer_invalidate.
- *
- * Revision 1.16  1998/06/18 07:22:12  tri
- *      Heavy rethinking of the concepts in the deque
- *      and the list.  For now on both deque and list
- *      start from `tail' and end to `head'.  Sorting
- *      functions make order ascending from tail to head.
- *      Moving list pointer forward, move it towards head
- *      and moving it backwards move it towards tail.
- *
- *      Terms head and tail are utilized also in lists
- *      replacing old `first' and `last'.
- *
- *      Now they should make sense.
- *
- * Revision 1.15  1998/04/23 14:07:56  tri
- *      Made single TRQ_USE_FUNCTIONS instead of
- *      separate one for lists and deques.
- *
- * Revision 1.14  1998/04/22 21:56:39  tri
- *      Added include trq_list_f.h.
- *
- * Revision 1.13  1998/04/20 20:47:17  tri
- *      TRQ_*_NO_ITEM -> TRQ_NO_ITEM
- *
- * Revision 1.12  1998/04/20 15:05:06  tri
- *      SNAFU in search and replace.
- *
- * Revision 1.11  1998/04/20 14:55:17  tri
- *      Final solution for deque basic operation names.
- *      Now they are trq_deque_insert_head, trq_deque_insert_tail,
- *      trq_deque_get_head and trq_deque_get_tail.  After intensive
- *      customer survey, this seems to be the most intuitive way.
- *
- * Revision 1.10  1998/04/18 11:01:09  tri
- *      Formatting.
- *
- * Revision 1.9  1998/04/18 10:29:47  tri
- *      Renamed API functions to more intuitive form:
- *      trq_deque_put_last to trq_deque_put,
- *      trq_deque_put to trq_deque_push,
- *      trq_deque_get_tail to trq_deque_pop,
- *      trq_deque_mapcar_bw to trq_deque_mapcar_reverse,
- *      trq_list_mapcar_bw to trq_list_mapcar_reverse,
- *      trq_deque_join_bw to trq_deque_join_tail and
- *      trq_deque_join to trq_deque_join_head.
- *
- * Revision 1.8  1998/04/17 16:45:29  tri
- *      Fixed trq_list_end.
- *
- * Revision 1.7  1998/04/17 16:04:44  tri
- *      Fixed previous addition :).
- *
- * Revision 1.6  1998/04/17 15:56:03  tri
- *      Added __trq_list_clear.
- *
- * Revision 1.5  1998/04/17 15:38:30  tri
- *      Renamed trq_list_get_backward and trq_list_get_forward to
- *      trq_list_get_bw and trq_list_get_fw accordingly.
- *
- * Revision 1.4  1998/04/17 15:17:29  tri
- *      Fixed almost all list operations.  List pointer
- *      stuff was really buggy.
- *
- * Revision 1.3  1998/04/17 08:51:57  tri
- *      Types `deque' and `list' and constants `DEQUE_NO_ITEM'
- *      and `LIST_NO_ITEM' prefixed with `trq_' and `TRQ_'
- *      accordingly.
- *
- * Revision 1.2  1998/04/16 17:30:21  tri
- *      Fixed formatting.  No functional changes.
- *
- * Revision 1.1  1998/04/16 14:39:42  tri
- *      Initial revision
- *
- * $EndLog$
  */
 #ifndef __TRQ_LIST__H__
 #define __TRQ_LIST__H__ 1

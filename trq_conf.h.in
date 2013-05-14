@@ -4,9 +4,9 @@
  *  Deque for struct type with only one link pointer (x->next).
  *  ----------------------------------------------------------------------
  *  Created      : Fri Dec  5 11:19:37 1997 tri
- *  Last modified: Wed Oct 10 01:06:09 2001 tri
+ *  Last modified: Tue May 14 20:25:00 2013 tri
  *  ----------------------------------------------------------------------
- *  Copyright © 1995-1999, 2001
+ *  Copyright Â© 1995-1999, 2001, 2013
  *  Timo J. Rinne <tri@iki.fi>
  *  All rights reserved.  See file COPYRIGHT for details.
  *  ----------------------------------------------------------------------
@@ -17,42 +17,6 @@
  *  Please, send your patches to <tri@iki.fi>.
  *  ----------------------------------------------------------------------
  *
- * $Id: trq_conf.h.in,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
- *
- * $Log: trq_conf.h.in,v $
- * Revision 1.1.1.1  2001/10/09 22:29:31  tri
- * 	Imported back from the SSH source tree.
- *
- * Revision 1.5  2001/01/15 09:57:41  huima
- * 	And here we go... changes for libtool and Scheme.
- *
- * Revision 1.4  1999/12/08 20:28:50  tmo
- *      Changes from the ipsec-3.0 branch.
- *
- * Revision 1.3  1999/11/24 17:17:50  tri
- *      Merged from the branch.
- *
- * Revision 1.2.20.1  1999/11/24 16:28:35  tri
- *      Made default value of TRQ_USE_FUNCTIONS to be defined
- *      in configure time by --enable-trq-macros[=no] argument.
- *      Default is no.
- *
- * Revision 1.2  1998/07/06 13:50:59  tri
- *      Fixed log entries to have CVS like indentation.
- *
- * Revision 1.1  1998/07/06 13:11:36  tri
- *      Added to CVS.
- *
- * Revision 1.3  1998/07/06 08:04:02  tri
- *      Added endlog.
- *
- * Revision 1.2  1998/06/23 07:28:28  tri
- *      Added config define for small objects.
- *
- * Revision 1.1  1998/04/16 14:39:42  tri
- *      Initial revision
- *
- * $EndLog$
  */
 #ifndef __TRQ_CONF__H__
 #define __TRQ_CONF__H__ 1

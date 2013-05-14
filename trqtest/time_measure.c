@@ -4,9 +4,9 @@
  *  Time measurement stuff for testing.
  *  ----------------------------------------------------------------------
  *  Created      : Wed Apr 15 21:11:41 1998 tri
- *  Last modified: Wed Oct 10 01:09:39 2001 tri
+ *  Last modified: Tue May 14 20:26:58 2013 tri
  *  ----------------------------------------------------------------------
- *  Copyright © 1995-1998, 2001
+ *  Copyright Â© 1995-1998, 2001, 2013
  *  Timo J. Rinne <tri@iki.fi>
  *  All rights reserved.  See file COPYRIGHT for details.
  *  ----------------------------------------------------------------------
@@ -17,34 +17,6 @@
  *  Please, send your patches to <tri@iki.fi>.
  *  ----------------------------------------------------------------------
  *
- * $Id: time_measure.c,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
- *
- * $Log: time_measure.c,v $
- * Revision 1.1.1.1  2001/10/09 22:29:31  tri
- * 	Imported back from the SSH source tree.
- *
- * Revision 1.7  1998/07/06 09:35:04  tri
- * Added endlog.
- *
- * Revision 1.6  1998/06/18 15:09:52  tri
- * Get along without sleep(3).
- *
- * Revision 1.5  1998/06/11 13:17:07  tri
- * test.h -> trq_test.h.
- *
- * Revision 1.4  1998/04/18 10:53:15  tri
- * SNAFU
- *
- * Revision 1.3  1998/04/18 10:50:55  tri
- * Use usleep if available.
- *
- * Revision 1.2  1998/04/16 17:48:38  tri
- * Some includes made optional.
- *
- * Revision 1.1  1998/04/16 14:39:41  tri
- * Initial revision
- *
- * $EndLog$
  */
 #include <stdio.h>
 

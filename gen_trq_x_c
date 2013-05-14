@@ -7,9 +7,9 @@
 #  Generate automagically source files trq_*_x_[0-9][0-9][0-9].c
 #  ----------------------------------------------------------------------
 #  Created      : Mon Jun 22 14:58:33 1998 tri
-#  Last modified: Wed Oct 10 01:05:38 2001 tri
+#  Last modified: Tue May 14 20:25:57 2013 tri
 #  ----------------------------------------------------------------------
-#  Copyright © 1998, 2001
+#  Copyright Â© 1998, 2001, 2013
 #  Timo J. Rinne <tri@iki.fi>
 #  All rights reserved.  See file COPYRIGHT for details.
 #  ----------------------------------------------------------------------
@@ -20,37 +20,6 @@
 #  Please, send your patches to <tri@iki.fi>.
 #  ----------------------------------------------------------------------
 #
-# $Id: gen_trq_x_c,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
-#
-# $Log: gen_trq_x_c,v $
-# Revision 1.1.1.1  2001/10/09 22:29:31  tri
-# 	Imported back from the SSH source tree.
-#
-# Revision 1.2  1998/07/06 13:50:58  tri
-# 	Fixed log entries to have CVS like indentation.
-#
-# Revision 1.1  1998/07/06 13:11:30  tri
-# 	Added to CVS.
-#
-# Revision 1.6  1998/07/06 08:02:50  tri
-#	Added endlog.
-#
-# Revision 1.5  1998/06/23 07:39:21  tri
-#	Added possbility to define small objects in trq_conf.h.
-#
-# Revision 1.4  1998/06/22 17:17:26  tri
-#	Fixed one minor glitch.
-#
-# Revision 1.3  1998/06/22 16:55:41  tri
-#	Fixed flag names.
-#
-# Revision 1.2  1998/06/22 16:50:10  tri
-#	Added flags.
-#
-# Revision 1.1  1998/06/22 16:23:03  tri
-#	Initial revision
-#
-# $EndLog$
 #
 
 u="1"
@@ -110,7 +79,7 @@ rm -f "$f"
 ( echo '/* GENERATED FILE.  DO NOT EDIT. */'
   echo ''
   echo '/*'
-  echo ' * Copyright © 1998 Timo J. Rinne <tri@iki.fi>'
+  echo ' * Copyright Â© 1998 Timo J. Rinne <tri@iki.fi>'
   echo ' * All rights reserved.'
   echo ' * See file COPYRIGHT for details.'
   echo ' */'

@@ -4,9 +4,9 @@
  *  Test List operations.
  *  ----------------------------------------------------------------------
  *  Created      : Tue Nov 21 17:47:40 1995 tri
- *  Last modified: Wed Oct 10 01:07:19 2001 tri
+ *  Last modified: Tue May 14 20:21:05 2013 tri
  *  ----------------------------------------------------------------------
- *  Copyright © 1995-1999, 2001
+ *  Copyright Â© 1995-1999, 2001, 2013
  *  Timo J. Rinne <tri@iki.fi>
  *  All rights reserved.  See file COPYRIGHT for details.
  *  ----------------------------------------------------------------------
@@ -17,142 +17,6 @@
  *  Please, send your patches to <tri@iki.fi>.
  *  ----------------------------------------------------------------------
  *
- * $Id: t-list.c,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
- *
- * $Log: t-list.c,v $
- * Revision 1.1.1.1  2001/10/09 22:29:31  tri
- * 	Imported back from the SSH source tree.
- *
- * Revision 1.7  2001/04/24 18:29:58  fis
- * 	changed method names in sshadt_map.h
- *
- * Revision 1.6  2000/02/02 13:51:23  mtr
- *      Merged changes from the 3.0 release.
- *
- * Revision 1.5.14.1  1999/12/15 05:48:15  kivinen
- *      Changed foo() to foo(void) in function declarations and
- *      prototypes, because foo() is not a prototype, it is return
- *      type declaration, and compiles complain about missing
- *      prototype.
- *
- * Revision 1.5  1999/01/25 09:06:55  tri
- *      Fixed one changed interface name.
- *
- * Revision 1.4  1998/12/15 13:42:22  tri
- *      Renamed a few interfaces to make things more intuitive:
- *          - trq_list_rewind -> trq_list_goto_first
- *          - trq_list_end -> trq_list_goto_last
- *          - trq_list_insert_head -> trq_list_insert_last
- *          - trq_list_insert_tail -> trq_list_insert_first
- *          - trq_list_get_head -> trq_list_get_last
- *          - trq_list_get_tail -> trq_list_get_first
- *          - trq_list_join_head -> trq_list_join_after_last
- *          - trq_list_join_tail -> trq_list_join_before_first
- *
- * Revision 1.3  1998/07/06 15:01:51  tri
- *      Fixed printf formats and other SNAFUs that came
- *      out from the closet in the -Wall compilation.
- *
- * Revision 1.2  1998/07/06 13:53:52  tri
- *      Fixed log entries to have CVS like indentation.
- *
- * Revision 1.1  1998/07/06 13:14:08  tri
- *      Added to CVS.
- *
- * Revision 1.22  1998/07/06 09:33:04  tri
- *      Added endlog.
- *
- * Revision 1.21  1998/06/22 16:29:00  tri
- *      Removed _p from in_order function name.
- *
- * Revision 1.20  1998/06/22 08:38:30  tri
- *      Added more testing for swap.
- *
- * Revision 1.19  1998/06/22 07:15:59  tri
- *      trq_list_member_p -> trq_list_member
- *      trq_deque_member_p -> trq_deque_member
- *      trq_list_pointer_valid_p -> trq_list_pointer_valid
- *      trq_list_compatible_p -> trq_list_compatible
- *      trq_deque_compatible_p -> trq_deque_compatible
- *
- * Revision 1.18  1998/06/21 20:46:51  tri
- *      Revisited join_test.
- *
- * Revision 1.17  1998/06/21 20:17:04  tri
- *      Added nth tests to join_test.
- *
- * Revision 1.16  1998/06/18 14:41:29  tri
- *      Sort test mapcars fixed.
- *
- * Revision 1.15  1998/06/18 13:56:31  tri
- *      Added more complete set of tests.
- *
- * Revision 1.14  1998/06/18 08:17:16  tri
- *      Test always that pointer size matches to integral pointer size.
- *
- * Revision 1.13  1998/06/18 07:22:12  tri
- *      Heavy rethinking of the concepts in the deque
- *      and the list.  For now on both deque and list
- *      start from `tail' and end to `head'.  Sorting
- *      functions make order ascending from tail to head.
- *      Moving list pointer forward, move it towards head
- *      and moving it backwards move it towards tail.
- *
- *      Terms head and tail are utilized also in lists
- *      replacing old `first' and `last'.
- *
- *      Now they should make sense.
- *
- * Revision 1.12  1998/06/17 17:02:55  tri
- *      This file can no longer be compiled alone, but
- *      is included to t-list-func.c or t-list-macro.c
- *      instead, producing the tests for function or
- *      macro versions of the operations accordingly.
- *
- * Revision 1.11  1998/06/11 14:37:18  tri
- *      Made it nonverbose but thorough if called wothout arguments.
- *
- * Revision 1.10  1998/04/18 10:29:47  tri
- *      Renamed API functions to more intuitive form:
- *      trq_deque_put_last to trq_deque_put,
- *      trq_deque_put to trq_deque_push,
- *      trq_deque_get_last to trq_deque_pop,
- *      trq_deque_mapcar_bw to trq_deque_mapcar_reverse,
- *      trq_list_mapcar_bw to trq_list_mapcar_reverse,
- *      trq_deque_join_bw to trq_deque_join_tail and
- *      trq_deque_join to trq_deque_join_head.
- *
- * Revision 1.9  1998/04/17 16:55:10  tri
- *      List join renamed.
- *
- * Revision 1.8  1998/04/17 16:45:51  tri
- *      Tested trq_list_join.
- *
- * Revision 1.7  1998/04/17 16:19:31  tri
- *      Testing also deque_to_list and list_to_deque.
- *
- * Revision 1.6  1998/04/17 15:38:30  tri
- *      Renamed trq_list_get_backward and trq_list_get_forward to
- *      trq_list_get_bw and trq_list_get_fw accordingly.
- *
- * Revision 1.5  1998/04/17 15:26:21  tri
- *      Added testing of trq_list_mapcar_reverse.
- *
- * Revision 1.4  1998/04/17 15:18:04  tri
- *      Made `pointer' test set.  It was really needed :).
- *
- * Revision 1.3  1998/04/17 08:51:57  tri
- *      Types `deque' and `list' and constants `DEQUE_NO_ITEM'
- *      and `LIST_NO_ITEM' prefixed with `trq_' and `TRQ_'
- *      accordingly.
- *
- * Revision 1.2  1998/04/16 17:48:29  tri
- *      Some includes made optional.
- *
- * Revision 1.1  1998/04/16 14:39:41  tri
- *      Initial revision
- *
- * $EndLog$
  */
 
 #ifndef __T_LIST_MACRO_C__

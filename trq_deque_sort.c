@@ -5,9 +5,9 @@
  *  Sorting of the deque.
  *  ----------------------------------------------------------------------
  *  Created      : Sun Apr 19 16:01:09 1998 tri
- *  Last modified: Wed Oct 10 01:03:18 2001 tri
+ *  Last modified: Tue May 14 20:23:57 2013 tri
  *  ----------------------------------------------------------------------
- *  Copyright © 1995-1998, 2001
+ *  Copyright Â© 1995-1998, 2001, 2013
  *  Timo J. Rinne <tri@iki.fi>
  *  All rights reserved.  See file COPYRIGHT for details.
  *  ----------------------------------------------------------------------
@@ -18,134 +18,6 @@
  *  Please, send your patches to <tri@iki.fi>.
  *  ----------------------------------------------------------------------
  *
- * $Id: trq_deque_sort.c,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
- *
- * $Log: trq_deque_sort.c,v $
- * Revision 1.1.1.1  2001/10/09 22:29:31  tri
- * 	Imported back from the SSH source tree.
- *
- * Revision 1.12  2001/04/24 18:29:57  fis
- * 	changed method names in sshadt_map.h
- *
- * Revision 1.11  1999/10/21 00:33:37  huima
- *      <trq_conf.h> ==> "trq_conf.h"
- *
- * Revision 1.10  1998/10/23 21:20:16  kivinen
- *      Removed sshincludes.h. This file cannot include it, because it
- *      doesn't belong to the distribution. Changed the
- *      SSHDIST_WINDOWS to WINDOWS, because if I have understood
- *      correctly the sshincludes.h was included only to the that one
- *      define.
- *
- * Revision 1.9  1998/10/23 12:52:20  ranki
- *      Added #include "sshincludes.h". These files ceased to compile in
- *      Visual C++ without sshincludes.h
- *
- * Revision 1.8  1998/10/01 23:28:02  kivinen
- *      Removed sshincludes.h.
- *
- * Revision 1.7  1998/10/01 17:03:55  vecna
- *      IPSEC 1.2 Compiles in Windows OK
- *
- * Revision 1.6  1998/08/19 00:30:07  sjl
- *      Added trq_conf_win.h (which contains Windows-specific options) and
- *      added #ifndef SSHDIST_WINDOWS to relevant parts of code to port it
- *      to Windows.
- *
- * Revision 1.5  1998/07/19 12:42:16  tri
- *      Fixed annoying typo in the log entry.
- *
- * Revision 1.4  1998/07/06 15:03:48  tri
- *      Removed unused variable.
- *
- * Revision 1.3  1998/07/06 14:28:18  tri
- *      Removed unused variables.
- *
- * Revision 1.2  1998/07/06 13:51:04  tri
- *      Fixed log entries to have CVS like indentation.
- *
- * Revision 1.1  1998/07/06 13:11:44  tri
- *      Added to CVS.
- *
- * Revision 1.21  1998/07/06 09:27:08  tri
- *      Added endlog.
- *
- * Revision 1.20  1998/06/23 07:39:35  tri
- *      Added possbility to define small objects in trq_conf.h.
- *
- * Revision 1.19  1998/06/22 16:28:02  tri
- *      Removed _p from in_order function name.
- *
- * Revision 1.18  1998/06/18 12:09:13  tri
- *      Fixed in_order_p.
- *
- * Revision 1.17  1998/06/18 07:22:12  tri
- *      Heavy rethinking of the concepts in the deque
- *      and the list.  For now on both deque and list
- *      start from `tail' and end to `head'.  Sorting
- *      functions make order ascending from tail to head.
- *      Moving list pointer forward, move it towards head
- *      and moving it backwards move it towards tail.
- *
- *      Terms head and tail are utilized also in lists
- *      replacing old `first' and `last'.
- *
- *      Now they should make sense.
- *
- * Revision 1.16  1998/06/11 18:54:59  tri
- *      Added trq_deque_in_order_p.
- *
- * Revision 1.15  1998/06/11 18:18:27  tri
- *      Added trq_deque_insert_in_order.
- *
- * Revision 1.14  1998/06/11 13:47:36  tri
- *      Fixed an annoying bug.
- *
- * Revision 1.13  1998/04/24 11:51:48  tri
- *      Removed implicit macro calls.
- *
- * Revision 1.12  1998/04/23 17:50:11  tri
- *      Added insertion sort.
- *
- * Revision 1.11  1998/04/23 14:07:56  tri
- *      Made single TRQ_USE_FUNCTIONS instead of
- *      separate one for lists and deques.
- *
- * Revision 1.10  1998/04/22 21:55:39  tri
- *      Conceptual more than functional minor fix.
- *
- * Revision 1.9  1998/04/21 11:24:15  tri
- *      Typedef `callback' function types.
- *
- * Revision 1.8  1998/04/20 20:47:17  tri
- *      TRQ_*_NO_ITEM -> TRQ_NO_ITEM
- *
- * Revision 1.7  1998/04/20 17:57:39  tri
- *      Implemented bubblesort.
- *
- * Revision 1.6  1998/04/20 17:32:13  tri
- *      Statics are now also inline, if supported.
- *
- * Revision 1.5  1998/04/20 16:36:24  tri
- *      Bug in quicksort partition clobbered the length
- *      of the result.
- *
- * Revision 1.4  1998/04/20 16:16:48  tri
- *      Added mergesort.
- *
- * Revision 1.3  1998/04/20 14:55:17  tri
- *      Final solution for deque basic operation names.
- *      Now they are trq_deque_insert_tail, trq_deque_insert_head,
- *      trq_deque_get_tail and trq_deque_get_head.  After intensive
- *      customer survey, this seems to be the most intuitive way.
- *
- * Revision 1.2  1998/04/19 14:37:18  tri
- *      Prototypes.
- *
- * Revision 1.1  1998/04/19 14:22:45  tri
- *      Initial revision
- *
- * $EndLog$
  */
 
 #ifndef WINDOWS

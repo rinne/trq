@@ -4,9 +4,9 @@
  *  si_prefix - fit double with suitable si-prefix.
  *  ----------------------------------------------------------------------
  *  Created      : Sat Dec  6 15:55:14 1997 tri
- *  Last modified: Wed Oct 10 01:09:22 2001 tri
+ *  Last modified: Tue May 14 20:20:03 2013 tri
  *  ----------------------------------------------------------------------
- *  Copyright © 1997-1998, 2001
+ *  Copyright Â© 1997-1998, 2001, 2013
  *  Timo J. Rinne <tri@iki.fi>
  *  All rights reserved.  See file COPYRIGHT for details.
  *  ----------------------------------------------------------------------
@@ -15,22 +15,6 @@
  *  otherwise) by the use of this software.
  *  ----------------------------------------------------------------------
  *
- * $Id: si_prefix.c,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
- *
- * $Log: si_prefix.c,v $
- * Revision 1.1.1.1  2001/10/09 22:29:31  tri
- * 	Imported back from the SSH source tree.
- *
- * Revision 1.3  1998/07/06 09:34:48  tri
- * Added endlog.
- *
- * Revision 1.2  1998/06/11 13:16:53  tri
- * Added include trq_test.h.
- *
- * Revision 1.1  1998/04/16 14:39:41  tri
- * Initial revision
- *
- * $EndLog$
  */
 
 #include <stdio.h>

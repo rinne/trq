@@ -1,5 +1,3 @@
-$Id: README,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
-
 This is efficient deque and list handling library.  You can use this
 to store structures that have space for one pointer to be used by the
 routines.  The struct member that is used as a pointer store is given

@@ -10,14 +10,6 @@
 # Copyright (C) 1998 Timo J. Rinne and Tero Kivinen
 # All rights reserved.  See file COPYRIGHT for details.
 # 
-# $Log: Makefile.am,v $
-# Revision 1.1.1.1  2001/10/09 22:29:31  tri
-# 	Imported back from the SSH source tree.
-#
-# Revision 1.3  1998/07/06 08:02:11  tri
-# Added log.
-#
-# $EndLog$
 #
 
 AUTOMAKE_OPTIONS = 1.0 foreign dist-zip no-dependencies

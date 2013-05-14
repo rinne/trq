@@ -5,9 +5,9 @@
  *  Shuffle deque.
  *  ----------------------------------------------------------------------
  *  Created      : Tue Oct  9 17:01:32 2001 tri
- *  Last modified: Wed Oct 10 01:03:07 2001 tri
+ *  Last modified: Tue May 14 20:24:03 2013 tri
  *  ----------------------------------------------------------------------
- *  Copyright © 2001
+ *  Copyright Â© 2001, 2013
  *  Timo J. Rinne <tri@iki.fi>
  *  All rights reserved.  See file COPYRIGHT for details.
  *  ----------------------------------------------------------------------
@@ -18,13 +18,6 @@
  *  Please, send your patches to <tri@iki.fi>.
  *  ----------------------------------------------------------------------
  *
- * $Id: trq_deque_shuffle.c,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
- *
- * $Log: trq_deque_shuffle.c,v $
- * Revision 1.1.1.1  2001/10/09 22:29:31  tri
- * 	Imported back from the SSH source tree.
- *
- * $EndLog$
  */
 
 #include <trq_deque.h>

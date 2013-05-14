@@ -1,12 +1,11 @@
-/*   -*- c -*-
  *
  *  ----------------------------------------------------------------------
  *  Various utils for testing.
  *  ----------------------------------------------------------------------
  *  Created      : Wed Apr 15 21:11:41 1998 tri
- *  Last modified: Wed Oct 10 01:09:55 2001 tri
+ *  Last modified: Tue May 14 20:19:48 2013 tri
  *  ----------------------------------------------------------------------
- *  Copyright © 1995-1998, 2001
+ *  Copyright Â© 1995-1998, 2001, 2013
  *  Timo J. Rinne <tri@iki.fi>
  *  All rights reserved.  See file COPYRIGHT for details.
  *  ----------------------------------------------------------------------
@@ -16,16 +15,6 @@
  *
  *  Please, send your patches to <tri@iki.fi>.
  *  ----------------------------------------------------------------------
- *
- * $Id: trq_test.h,v 1.1.1.1 2001/10/09 22:29:31 tri Exp $
- *
- * $Log: trq_test.h,v $
- * Revision 1.1.1.1  2001/10/09 22:29:31  tri
- * 	Imported back from the SSH source tree.
- *
- * Revision 1.1  1998/04/16 14:39:41  tri
- * Initial revision
- *
  *
  */
 #ifndef __TEST__H__
